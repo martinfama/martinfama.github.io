@@ -1,0 +1,619 @@
+
+
+
+
+
+
+
+
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lost and found | Trade network analysis </title>
+    <meta name="theme-color" content="#222222"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/popper.min.js"></script>
+    <script src="/assets/js/bootstrap4.min.js"></script>
+    <script src="/assets/js/header.js"></script>
+    <script src="/assets/css/svg-with-js/js/fontawesome-all.js"></script>
+    <link href="/assets/css/bootstrap4.min.css" rel="stylesheet">
+    <link href="/assets/css/theme.css" rel="stylesheet">
+    <link href="/assets/css/syntax.css" rel="stylesheet">
+ </head>
+
+<body>
+
+
+
+
+
+
+<script type="text/javascript">
+    WebFontConfig = {
+        google: {
+            families: ['Ubuntu::latin']
+        }
+    };
+    (function () {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+    })();
+</script>
+
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">Lost and found</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="/">/home</a>
+                <a class="nav-item nav-link" href="/archive">/archive</a>
+                <a class="nav-item nav-link" href="/tags">/tags</a>
+                <a class="nav-item nav-link" href="/about">/about</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <div class="wrapper">
+      <div class="content">
+        <div class="container container-center">
+          <div class="row">
+            <div class="col-md-8 offset-md-2">
+              <div class="article">
+                <div class="card">
+                  <h1><a href="/2023/04/07/trade-network/">Trade network analysis</a></h1>
+                  <div class="post-meta">
+                    <div class="post-time">
+                      <i class="fa fa-calendar-alt"></i>
+                      <time>07 Apr 2023</time>
+                    </div>
+                    <ul>
+                      
+                    </ul>
+                  </div>
+                  <div class="post-content">
+                    
+                      <ul class="toc">
+  <li><a href="#1-introduction-trade">1. Introduction: Trade</a></li>
+  <li><a href="#2-the-dataset">2. The dataset</a>
+    <ul>
+      <li><a href="#21-datafile-format">2.1. Datafile format</a></li>
+      <li><a href="#22-loading-the-data">2.2. Loading the data</a></li>
+    </ul>
+  </li>
+  <li><a href="#3-analysis">3. Analysis</a>
+    <ul>
+      <li><a href="#31-degree-distributions">3.1. Degree distributions</a></li>
+      <li><a href="#32-total-imports-and-exports">3.2. Total imports and exports</a></li>
+      <li><a href="#33-centrality-measures">3.3. Centrality measures</a></li>
+    </ul>
+  </li>
+  <li><a href="#4-network-attacks">4. Network attacks</a></li>
+  <li><a href="#5-conclusions">5. Conclusions</a></li>
+  <li><a href="#references">References</a>
+    <ul>
+      <li><a href="#economy">Economy</a></li>
+      <li><a href="#network-science">Network Science</a></li>
+    </ul>
+  </li>
+</ul>
+                    
+                    <h1 id="1-introduction-trade">1. Introduction: Trade</h1>
+
+<p>Trade. The essence of human civilization. Maybe not <em>the</em>, but definitely <em>an</em>. Ever since a couple of biped hominids decided to swap some of their stuff, we’ve been trading. Long-distance commerce has been around for about 150,000 years! <a class="citation" href="#peter_watson_fire_to_freud">(Watson, 2005)</a> Trade necessarily implied contact between different cultures. The Silk Road for example connected China to the Mediterranean via a 6,400 km long road that was used for trade for over 1,000 years <a class="citation" href="#britannica_silk_road">(<i>Silk Road</i>, n.d.)</a>. Material goods weren’t the only thing that travelled this ancient highway: ideas, religions, and diseases also found their way across the Eurasian continent.</p>
+
+<p><img src="Silk-Road.jpg" alt="The Silk Road" />
+<em>The asian section of the Silk Road</em></p>
+
+<p>At the time one of the most important trade networks, the Silk Road is modest compared to the globalized version of our times. Up until recently, there were very hard limiting factors to trading. It wasn’t just the speed of transportation; there were also communication barriers, the preservation of goods on long journeys, and even currency mismatches which complicated trade. There was a different pace back then. Eventually, the world went and got itself into a big damn hurry. Shipping stuff over the ocean is pretty much a given now. Communication is instantaneous. Goods are preserved for months in refrigerated containers. And we have a global currency; if money is the true language of the world, then the good ole’ American dollar is the lingua franca.</p>
+
+<p>I don’t want to make this post about the history of trade. The reason behind this little incursion is that I came across a dataset on Kaggle which compiled information about the world’s trade network over the last two decades. Essentially, this is a practice dataset for network analysis and data visualization. Over the course of this post, I’ll show some code snippets and visualizations that I’ve made using this dataset. I’ll also try to explain some of the concepts that I’ve used, and hopefully this will be useful to someone.</p>
+
+<h1 id="2-the-dataset">2. The dataset</h1>
+
+<p>The dataset is simple: it shows the imports and exports between 161 countries in the years 2000, 2005, 2010, 2015 and 2018. This information is provided as directed, weighted networks for each year, with nodes being countries, edge direction representing importing and exporting, and edge weights representing the total annual value (in U<span>$</span>D) of those imports and exports. The dataset can be found <a href="https://www.kaggle.com/datasets/yasirtariq/tradenetwork">here</a>. According to the author, the data was compiled from the <a href="https://comtradeplus.un.org/">UN Comtrade database</a>, which is a comprehensive database of international trade statistics. I’m tempted to try using this database directly, since it is much richer in information than the Kaggle dataset, but for now I’ll focus on the latter.</p>
+
+<h2 id="21-datafile-format">2.1. Datafile format</h2>
+
+<p>The files (five in total, one for each year), are <code class="language-plaintext highlighter-rouge">pajek</code> .net files. This is a common format for representing network data, and supported by most network analysis software. In the following block, we can see some of the entries in the file for the year 2000:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>*Vertices 161
+    1 "AGO"                                    0.5496    0.4378    0.5000
+    2 "ALB"                                    0.5560    0.7286    0.5000
+    3 "ARE"                                    0.6496    0.6301    0.5000
+    .  ...                                      ...       ...       ...
+    159 "ZAF"                                    0.5637    0.3302    0.5000
+    160 "ZMB"                                    0.5774    0.4270    0.5000
+    161 "ZWE"                                    0.5810    0.3944    0.5000
+*Arcs
+    2    3 1197.070000000
+    2    4 162.552000000
+    2    5 147.911000000
+    2    7 776.949000000
+    .    . ...
+    160  158 6.090000000
+    160  159 494256
+    160  161 68583.900000000
+</code></pre></div></div>
+
+<p>The first line of the file indicates the number of vertices (or nodes) that the network has, along with node names and attributes. In this specific case, names are given by the country’s <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3">ISO 3166-1 alpha-3 code</a>. The attributes are not actually related to the countries themselves, but rather are given in the Pajek standard as a way to export to a PostScript description. The first two columns contain $x$ and $y$ positions, in the range $[0, 1)$. The third column is used as an index to specify shape/color to draw that specific node. The author of the dataset has apparently plotted the nodes according to longitude and latitude coordinates, so in a way the attributes actually are related to the countries. The third column, the <code class="language-plaintext highlighter-rouge">shape</code> attribute, is always set to 0.5, and we can ignore it.</p>
+
+<p>After the vertices section, the <code class="language-plaintext highlighter-rouge">*Arcs</code> section indicates the start of the edges. Each line represents an edge, with the first two numbers being the source and target nodes, and the third number being the weight of the edge. The weights are given in kiloU<span>$</span>D (i.e. just multiply the value by 1000), and are the total value of imports between the two countries (in a certain direction) in the given year. Since this is a directed edge, the information is read as: source country (first node) imports $w$ (weight) kilodollars from target country (second node). For example, the first line in the above block indicates that Albania (node 2) imported <span>$</span>1,197,070 worth of goods from the United Arab Emirates (node 3) in 2000.</p>
+
+<h2 id="22-loading-the-data">2.2. Loading the data</h2>
+
+<p>We’re going to be working with <a href="https://networkx.org/"><code class="language-plaintext highlighter-rouge">networkX</code></a>, which as the website says:</p>
+
+<blockquote>
+  <p>is a Python package for the creation, manipulation, and study of the structure, dynamics, and functions of complex networks.</p>
+</blockquote>
+
+<p><code class="language-plaintext highlighter-rouge">networkX</code> is very nice to work with, although it does have certain limitations on the size of the networks it can efficiently handle. Since our network is composed of merely 161 nodes (in the world of complex networks, this is quite small), the library should be able to handle it just fine. An interesting aspect about this particular network is that it is <em>dense</em>, in the sense that most of the possible connections between nodes actually exist, since countries tend to trade with almost every other country.</p>
+
+<p>Anyways, we can use <code class="language-plaintext highlighter-rouge">networkX</code> to import the data from a Pajek file, as such:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="n">networkx</span> <span class="k">as</span> <span class="n">nx</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="p">.</span><span class="nf">read_pajek</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span></code></pre></figure>
+
+<p>Let’s see how this works in practice. We’ll start by importing the data for the year 2000. We’ll also drop the <code class="language-plaintext highlighter-rouge">x</code>, <code class="language-plaintext highlighter-rouge">y</code> and <code class="language-plaintext highlighter-rouge">shape</code> attributes, since we won’t be using them. Finally, some information is retrieved about the graph, and the attributes of the Albania node are printed. The code is as follows:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="n">networkx</span> <span class="k">as</span> <span class="n">nx</span>
+<span class="n">dataset_dir</span> <span class="o">=</span> <span class="s">'../dataset/'</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="p">.</span><span class="nf">read_pajek</span><span class="p">(</span><span class="n">dataset_dir</span><span class="o">+</span><span class="s">'2000.net'</span><span class="p">)</span>
+<span class="c1"># drop the 'x', 'y' and 'shape' attrs
+</span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="p">.</span><span class="n">nodes</span><span class="p">:</span>
+    <span class="n">G</span><span class="p">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="nf">pop</span><span class="p">(</span><span class="s">'x'</span><span class="p">);</span> <span class="n">G</span><span class="p">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="nf">pop</span><span class="p">(</span><span class="s">'y'</span><span class="p">);</span> <span class="n">G</span><span class="p">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="nf">pop</span><span class="p">(</span><span class="s">'shape'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">nx</span><span class="p">.</span><span class="nf">info</span><span class="p">(</span><span class="n">G</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Attributes of Albania node:"</span><span class="p">,</span> <span class="n">G</span><span class="p">.</span><span class="n">nodes</span><span class="p">[</span><span class="s">'ALB'</span><span class="p">])</span></code></pre></figure>
+
+<p>which outputs:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MultiDiGraph with 161 nodes and 16335 edges
+Attributes of Albania node: {'id': '2'}
+</code></pre></div></div>
+
+<p>Let’s see some of the edges of the Albania node, and while we’re at it, get the total imports of Albania in 2000:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">albania_imports</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">ie</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">G_2000</span><span class="p">[</span><span class="s">'ALB'</span><span class="p">]):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">G_2000</span><span class="p">[</span><span class="s">'ALB'</span><span class="p">][</span><span class="n">e</span><span class="p">])</span>
+    <span class="n">albania_imports</span> <span class="o">+=</span> <span class="n">G_2000</span><span class="p">[</span><span class="s">'ALB'</span><span class="p">][</span><span class="n">e</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">'weight'</span><span class="p">]</span>            <span class="c1">#print using scientific notation
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Total imports of Albania in 2000: </span><span class="si">{</span><span class="n">albania_imports</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="p">.</span><span class="mi">2</span><span class="n">e</span><span class="si">}</span><span class="s"> U$D"</span><span class="p">)</span></code></pre></figure>
+
+<p>Output:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ARE {0: {'weight': 1197.07}}
+ARG {0: {'weight': 162.552}}
+ARM {0: {'weight': 147.911}}
+AUS {0: {'weight': 776.949}}
+AUT {0: {'weight': 11840.4}}
+...
+UKR {0: {'weight': 3169.35}}
+USA {0: {'weight': 15947.3}}
+ZAF {0: {'weight': 0.894}}
+Total imports of Albania in 2000: 1.07e+09 U$D
+</code></pre></div></div>
+
+<p>So, Albania imported just over a billion dollars worth of goods in the first year of this millennium.</p>
+
+<p>All right, so having familiarized ourselves with how the data is structured and loaded, let’s move on to building some tools to analyze the data. To avoid confusion, I’ll now clarify that I am making auxiliary functions in some <code class="language-plaintext highlighter-rouge">.py</code> files, as a sort of module to help me with the analysis. I’ll be importing these functions in the notebook, and using them to analyze the data.</p>
+
+<h1 id="3-analysis">3. Analysis</h1>
+
+<p>In this section, we will do some analysis on the network through the years, including degree distributions, centrality measures, and some other interesting things. In the figure below, we can see the network in 2010 plotted. Due to the high density of edges, this part is a bit of a mess. However, the node positions, sizes and colors are indicative of the degrees of the nodes and their centrality in the network.</p>
+
+<p><img src="trade_network_2010.png" alt="2010 Trade Network" />
+<em>The trade network in 2010. Node size: degree. Node color: eigenvector centrality</em></p>
+
+<h2 id="31-degree-distributions">3.1. Degree distributions</h2>
+
+<p>A good first step in any network analysis is checking out the degree distribution. It can give us insight into the structure of the network. In the figure below, we can see the in-degree, out-degree and total degree distributions of the network across the years. The in-degree distribution only counts the number of edges that point to a node, the out-degree distribution only counts the number of edges that point out of a node, and the total degree distribution is the sum of the in-degree and out-degree distributions. In our case, out-degree indicates the number of countries that import from a given country, while in-degree indicates the number of countries that a given country imports from (a bit confusing to have the orders switched, but it is the way the data is structured).</p>
+
+<p>Something that stands out at first is that in the case of the import distribution, there are several cases of countries having out-degree 0. This is due to missing data. For example, in the dataset for the year 2000, Angola (country code AGO, id 1) is not present as a source node in the <code class="language-plaintext highlighter-rouge">*Arcs</code> section. I find it highly unlikely that Angola did not import anything in that year, and it is much more likely that this data is missing for some reason. Interestingly, the number of countries with out-degree 0 decreases in the following years, but then increases again in 2015 and 2018.</p>
+
+<p>As to the structure of the networks, the distributions show that the networks are quite dense, with most of the nodes having a high degree. This is expected, as commented previously, due to the fact that countries tend to trade with almost every other country.</p>
+
+<p><img src="all_years_degrees.png" alt="Degree distributions" />
+<em>In-degree, out-degree and total degree distributions across the years</em></p>
+
+<h2 id="32-total-imports-and-exports">3.2. Total imports and exports</h2>
+
+<p>Let’s define a function to get the total imports and exports of a country in a given year. While in the last section we obtained the imports by summing over the list of edges form a given country, there is a more concise way to do it which is also inline with network analysis: using the <a href="https://en.wikipedia.org/wiki/Adjacency_matrix">adajacency matrix</a>. It is easy to see that the adjacency matrix of our network (in a given year) is given by</p>
+
+\[A_{ij} = \cases{\text{imports from j to i} &amp; if $i \neq j$\\ 0 &amp; otherwise}\]
+
+<p>Therefore, it is also quite simple to reach the conclusion that the total imports of a country $i$ in a given year is given by the sum of the $i$-th row of the adjacency matrix, and the total exports of a country $i$ in a given year is given by the sum of the $i$-th column of the adjacency matrix, i.e.:</p>
+
+\[\text{imports of } i = \sum_{j=1}^n A_{ij} \quad \text{and} \quad \text{exports of } i = \sum_{j=1}^n A_{ji}\]
+
+<p>The adjacency matrix can be obtained using <code class="language-plaintext highlighter-rouge">nx.adjacency_matrix</code>, which returns a <code class="language-plaintext highlighter-rouge">SciPy</code> sparse matrix. This code snippet shows how to get the imports and exports of a country:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">imports_exports</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">country</span><span class="p">):</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">nx</span><span class="p">.</span><span class="nf">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">G</span><span class="p">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">country</span><span class="p">][</span><span class="s">'id'</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span> <span class="c1"># the ids start at 1, but we need 0-indexing
+</span>    <span class="n">imports</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="nb">id</span><span class="p">,</span> <span class="p">:])</span> <span class="c1"># sum over the row
+</span>    <span class="n">exports</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sum</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span> <span class="nb">id</span><span class="p">])</span> <span class="c1"># sum over the column
+</span>    <span class="k">return</span> <span class="n">imports</span><span class="p">,</span> <span class="n">exports</span></code></pre></figure>
+
+<p>Nice and easy. Let’s go ahead an pull up data from all the years in the dataset, and plot the imports and exports of Albania over time. I’ll start to include less code now and just show the results, since this is pretty straightforward. In the figure below, the imports are shown in blue, and the exports in orange. Notice the y-axis is in scientific notation, with the scale being $1\text{e}9$, which means that the values are in billions of dollars. We can see that Albania’s imports and exports have tended to increase over time, with the imports being consistently higher than the exports. The trade balance, which is the difference between imports and exports, is being shown in green, and since in all cases imports are higher than exports, the balance is always negative: a deficit.</p>
+
+<p><img src="ALB_exports_imports_yearly.png" alt="Imports/Exports/Balance of Albania" />
+<em>Imports/Exports/Balance of Albania from 2000 to 2018</em></p>
+
+<p>The implications of having a trade deficit (in contrast with a trade surplus) are not trivial. One would assume, at first glance, that a country that imports more than it exports is doing badly economically, but since the economy is so mucho more complicated than that, this is not necessarily the case. <a href="https://www.investopedia.com/articles/investing/051515/pros-cons-trade-deficit.asp">This article</a> from Investopedia goes into the pros and cons of having a trade deficit, and I recommend reading it if you’re interested in the topic. Something interesting that the article mentions is that, broadly, smaller countries with a trade deficit are in more danger of foreign meddling in the economy. Which I think sort of makes sense. The US, for example, has had a consistent trade deficit since 1976, and yet it is still the world’s largest economy, dominating the global economy in many ways, since it’s size and power makes it less prone to foreign meddling.</p>
+
+<h2 id="33-centrality-measures">3.3. Centrality measures</h2>
+
+<p>I want to now move on to a more network oriented analysis. We’ll start by looking at the centrality measures of the countries in the network. The centrality measures are a set of metrics that are used to quantify, broadly speaking, the importance of a node in a network. There are many different centrality measures, but the most common ones are degree centrality, closeness centrality, betweenness centrality, and eigenvector centrality. In a nutshell, they focus on:</p>
+
+<ul>
+  <li><strong>Degree centrality</strong>: A measure of the number of connections a node has in comparison to other nodes in the network. If a node has many connections in comparison to other nodes, it is intuitively more important than a node with few connections.</li>
+  <li><strong>Closeness centrality</strong>: A measure of how close a node is to all other nodes in the network. “Close” here refers to the shortest path between nodes. If a node is reachable from all other nodes in the network with a short path, it is probably more important than a node that is not.</li>
+  <li><strong>Betweenness centrality</strong>: A measure of how many shortest paths between nodes in the network go through a given node. This measure is interesting, because it can be used to identify nodes that are “bridges” between different parts of the network.</li>
+  <li><strong>Eigenvector centrality</strong>: A measure of the importance of a node in the network, based on the importance of the nodes it is connected to. This is a more complex measure, related to the eigenvectors of the adjacency matrix of the network.</li>
+</ul>
+
+<p>The first three measures are pretty straightforward, but the last one is a bit confusing, I think. What exactly is the “importance” of a node? How do we define the importance if it is recursively dependent on the importance of other nodes? First, let’s consider defining this relationship mathematically. We define a vector $\vec{x}$, in which $x_i \in \mathbb{R}$ is this mystical importance of node $i$. We <em>do not</em> know the values of this vector yet. Next, we consider this sort of recursive relationship:</p>
+
+\[x_i = \frac{1}{\lambda} \sum_{j=1}^n A_{ij} x_j\]
+
+<p>where $A$ is the adjacency matrix of the network and $\lambda$ is an (apparently) arbitrary constant. This equation is simply stating</p>
+
+<blockquote>
+  <p>The importance of node $i$ is the sum of the importance of all the nodes that are connected to it, weighted by the corresponding edge weights.</p>
+</blockquote>
+
+<p>I think it is quite simple and makes a lot of sense to define this measure like this. The only thing that is not clear is how to actually calculate the values of the vector $\vec{x}$. And how to choose a value for $\lambda$. Let’s rewrite the equation above in matrix form:</p>
+
+\[\vec{x} = \frac{1}{\lambda} \mathbf{A} \vec{x}\]
+
+<p>and then</p>
+
+\[\lambda \vec{x} = \mathbf{A} \vec{x}\]
+
+<p>and any one who has taken a linear algebra course will recognize this as an eigenvector problem! This means that the only solutions that satisfy our definition of importance are the eigenvectors of the adjacency matrix. The question is, which eigenvector do we choose? For an $n \times n$ matrix, there are $n$ eigenvectors, and we need to choose one. The <a href="https://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem">Perron-Frobenius theorem</a> comes to the rescue here. This theorem states that for a square matrix $\mathbf{A}$ with all entries non-negative, the largest eigenvalue of $\mathbf{A}$ is real and positive, and the corresponding eigenvector is non-negative, while all other eigenvectors will have negative entries. This means that we can simply choose the eigenvector corresponding to the largest eigenvalue, which is called the leading eigenvector, and we will have a solution to our problem.</p>
+
+<p>Now, the attentive reader will have noticed that as we have defined this measure, the importance of a node is being built by considering the importance of node <em>that point towards it</em>. We are indeed considering, for a node $i$, a sum of the $i$-th row of $\mathbf{A}$. What if we want to consider the importance of a node based on the importance of the nodes that it points to? It does not take much to convince oneself that this implies defining our measure based on the <em>columns</em>, in which case it is quite simple to see that this equates to solving a left eigenvector problem:</p>
+
+\[\lambda \vec{y} = \vec{y} \mathbf{A}\]
+
+<p>where $\vec{y}$ is a row vector. In the previous equation, we had what is called a right eigenvector problem. For symmetric matrices, which would be the case of the adjacency matrix of an undirected network, the left and right eigenvectors are the same. However, for our network, the adjacency matrix is not symmetric, so we have to consider both left and right eigenvectors. For more information on this subject as regards to network science, I recommend checking out Newman’s book <a class="citation" href="#newman2018networks">(Newman, 2018, chap. 7)</a>.</p>
+
+<p>We can then summarize the two measures as follows:</p>
+
+<ul>
+  <li><strong>Eigenvector centrality (right)</strong>: The importance of a node is the sum of the importance of all the nodes that <strong>point to it</strong>, weighted by the corresponding edge weights. In the context of our trade network, it is roughly the <strong>importer importance</strong>.</li>
+  <li><strong>Eigenvector centrality (left)</strong>: The importance of a node is the sum of the importance of all the nodes that <strong>it points to</strong>, weighted by the corresponding edge weights. In the context of our trade network, it is roughly the <strong>exporter importance</strong>.</li>
+</ul>
+
+<p>All right! Having some intuition and formalism out of the way, let’s see some results. <code class="language-plaintext highlighter-rouge">networkX</code> has a function called <code class="language-plaintext highlighter-rouge">nx.eigenvector_centralities</code> that does all the heavy lifting for us. We can specify whether we want to calculate the left or right eigenvector centrality, and we can also specify whether we want to use the wieghted or unweighted adjacency matrix. Since we want to include the weights of the edges, we will use the weighted adjacency matrix. In the figure below, the eigenvector centralities of each country are plotted for each year.</p>
+
+<p><img src="eigenvector_centralities.png" alt="Eigenvector Centralities" />
+<em>Eigenvector Centralities over the years</em></p>
+
+<p>We can clearly see that a few countries have high centralities (in both cases), while most countries are concentrated at a lower score. Interestingly, in the case of right centralities, which are related to importance as regards to imports, there is a singular country across the entire time period that has a high centrality. Let’s get the highest scores to find out which countries are leading the pack.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>2000</th>
+      <th>2005</th>
+      <th>2010</th>
+      <th>2015</th>
+      <th>2018</th>
+      <th>.</th>
+      <th>2000</th>
+      <th>2005</th>
+      <th>2010</th>
+      <th>2015</th>
+      <th>2018</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>USA</td>
+      <td>CHN</td>
+      <td>CHN</td>
+      <td>CHN</td>
+      <td>CHN</td>
+      <td>.</td>
+      <td>USA</td>
+      <td>USA</td>
+      <td>USA</td>
+      <td>USA</td>
+      <td>USA</td>
+    </tr>
+    <tr>
+      <td>CAN</td>
+      <td>USA</td>
+      <td>USA</td>
+      <td>USA</td>
+      <td>USA</td>
+      <td>.</td>
+      <td>CAN</td>
+      <td>CAN</td>
+      <td>CHN</td>
+      <td>CHN</td>
+      <td>CHN</td>
+    </tr>
+    <tr>
+      <td>JPN</td>
+      <td>JPN</td>
+      <td>JPN</td>
+      <td>DEU</td>
+      <td>JPN</td>
+      <td>.</td>
+      <td>MEX</td>
+      <td>DEU</td>
+      <td>CAN</td>
+      <td>CAN</td>
+      <td>CAN</td>
+    </tr>
+    <tr>
+      <td>CHN</td>
+      <td>CAN</td>
+      <td>DEU</td>
+      <td>JPN</td>
+      <td>DEU</td>
+      <td>.</td>
+      <td>JPN</td>
+      <td>MEX</td>
+      <td>DEU</td>
+      <td>MEX</td>
+      <td>MEX</td>
+    </tr>
+    <tr>
+      <td>MEX</td>
+      <td>DEU</td>
+      <td>CAN</td>
+      <td>KOR</td>
+      <td>KOR</td>
+      <td>.</td>
+      <td>DEU</td>
+      <td>JPN</td>
+      <td>MEX</td>
+      <td>DEU</td>
+      <td>DEU</td>
+    </tr>
+    <tr>
+      <td>DEU</td>
+      <td>KOR</td>
+      <td>KOR</td>
+      <td>CAN</td>
+      <td>MEX</td>
+      <td>.</td>
+      <td>GBR</td>
+      <td>GBR</td>
+      <td>JPN</td>
+      <td>JPN</td>
+      <td>JPN</td>
+    </tr>
+    <tr>
+      <td>GBR</td>
+      <td>MEX</td>
+      <td>MEX</td>
+      <td>MEX</td>
+      <td>CAN</td>
+      <td>.</td>
+      <td>FRA</td>
+      <td>CHN</td>
+      <td>GBR</td>
+      <td>HKG</td>
+      <td>HKG</td>
+    </tr>
+    <tr>
+      <td>FRA</td>
+      <td>FRA</td>
+      <td>FRA</td>
+      <td>FRA</td>
+      <td>FRA</td>
+      <td>.</td>
+      <td>CHN</td>
+      <td>FRA</td>
+      <td>HKG</td>
+      <td>GBR</td>
+      <td>GBR</td>
+    </tr>
+    <tr>
+      <td>KOR</td>
+      <td>GBR</td>
+      <td>AUS</td>
+      <td>ITA</td>
+      <td>AUS</td>
+      <td>.</td>
+      <td>KOR</td>
+      <td>HKG</td>
+      <td>FRA</td>
+      <td>FRA</td>
+      <td>KOR</td>
+    </tr>
+    <tr>
+      <td>ITA</td>
+      <td>ITA</td>
+      <td>GBR</td>
+      <td>GBR</td>
+      <td>ITA</td>
+      <td>.</td>
+      <td>HKG</td>
+      <td>BEL</td>
+      <td>KOR</td>
+      <td>KOR</td>
+      <td>FRA</td>
+    </tr>
+  </tbody>
+</table>
+
+<p style="text-align: center;"><em>Top 10 countries by eigenvector centrality. Exports on left, imports on right.</em></p>
+
+<p>Both lists contain countries which I don’t find surprising. They tend to be larger and historically economically powerful countries. The most important importer, as seen on the right, is the USA. This is across all years. One takeaway from this result is that the USA seems to consume a large amount of products from a variety of trade partners, which is in line with the consumerism associated to this country. It is quite surprising that it’s right centrality score is so much higher than the rest.</p>
+
+<p><img src="USA_exports_imports_yearly.png" alt="Imports/Exports/Balance of the USA" />
+<em>Imports/Exports/Balance of the USA from 2000 to 2018</em></p>
+
+<p>Another interesting country we can focus on is China. Between 2000 and 2005, it climbed from the 4th position to 1st in terms of left centrality (exporter importance). It has stayed on top of the leader board for the rest of the time period. As to the right centrality, we can see China climb from 8th and 7th in 2000 and 2005 to 2nd place for the rest of the time period. Basing ourselves on these results alone, we can conclude that in the last two decades, China not only amped up its exporter status, but also improved it’s economy to the point where it is able to import a large amount of products from other countries. One needs not look too far to see the economic powerhouse that China has become in the last few decades. A quick skim of the <a href="https://en.wikipedia.org/wiki/Economy_of_China">Wikipedia page on China’s economy</a> will show a long list of economic achievements. The figure below also shows the trade balance of China from 2000 to 2018. The growth in both imports and exports is quite large, and exports have been consistently higher than imports, indicating a trade surplus.</p>
+
+<p><img src="CHN_exports_imports_yearly.png" alt="Imports/Exports/Balance of China" />
+<em>Imports/Exports/Balance of China from 2000 to 2018</em></p>
+
+<p>As for the rest of the centralities, I thought a scatter matrix of all the measures would be a good way to visualize them. The figure below is a GIF that shows the scatter matrix for each year. The diagonal shows the distribution of each centrality, while the off-diagonal shows the scatter plot of each pair of centralities. Some notable trends are the tendency for closeness to decrease across the years (due to the network becoming more connected), and the tendency for betweeness to become more clustered in relation to degree centrality. In the latter case, we can see for example in the year 2018 two main clusters: one for lower degree centrality, in which the betweeness is very low, and another for higher degree centrality, in which the betweeness is higher. I dare to say that this implies that lower degree countries, which are probably more marginalized countries in the world economy, are being even more left out of the main pathways of economic activity.</p>
+
+<p style="text-align: center;"><img src="centralities_scatter.gif" alt="Centralities Scatter Matrix" width="500" /></p>
+<p style="text-align: center;"><em>Centralities Scatter Matrix</em></p>
+
+<h1 id="4-network-attacks">4. Network attacks</h1>
+
+<p>In this section I’m going the explore the impact of a network attack on the overall functioning of the network. Suppose in this global economy, a country is left economically isolated, due to any number of reasons. How would this affect the rest of the network? I’m going to explore this question by removing nodes from the network and observing the impact on the rest of the network. I’ll focus on two ways to do this: random removals, and targeted removals. The targeted case is done by taking out the node with highest degree.</p>
+
+<p>As to how to evaluate the impact of the attack, I’ll use a measure called network efficiency, which broadly measures the capacity of the network to quickly transfer information. This is based on the shortest path between nodes. I think it is a decent measure for a trade network, because it can be interpreted as the capacity of the network to quickly transfer goods. The efficiency for an unweighted network is defined as:</p>
+
+\[E(G) = \frac{1}{N(N-1)} \sum_{i \neq j} \frac{1}{d(i,j)}\]
+
+<p>where $N$ is the number of nodes, and $d(i,j)$ is the shortest path between nodes $i$ and $j$. I am using the unweighted representation of our networks because in this case, the weight of the edges is not indicative of a distance measure. A good test would be to apply a weighted version of this measure (which exist), using the <em>inverse</em> of the weights, since a high trade volume can be interpreted as a “short” economic distance between countries, allowing that trade to be more efficient in distributing goods.</p>
+
+<p>Anyways, the figure below shows the impact on the unweighted global efficiency of the network across the years, for different number of nodes removed. The left figure shows random node removals, while the right figure shows targeted removals, where each node removed is the current highest degree node in the network. A total of 80 nodes were removed in each case, as indicated by the colormap. In the case of the targeted attack, the efficiency consistently takes a hit with each node removed. As for the random attack, the efficiency actually <em>improves</em> as nodes are removed. This makes some sense, because if more marginal nodes are removed, the network actually becomes more connected, and therefore more efficient.</p>
+
+<p>As to the general efficiency across the years, it is interesting that 2010 is consistently the most efficient version of this network. There is a pretty steep decline in 2015 and 2018. I’m not sure what to make of this. It could be indicative of some economic regressions across the globe, or simply an artefact of missing data.</p>
+
+<p><img src="network_efficiency_attack.png" alt="network_efficiency" />
+<em>Node removal impact on network efficiency</em></p>
+
+<!-- # 5. Trade diffusion simulation
+
+In this section, I'm going to explore a simple simulation of trade diffusion. The idea is to start the simulation with certain countries holding a certain amount of "money" or "goods", and then simulate the diffusion of these goods through the network. In each step, the rules of update are based on the import/export weights between countries, indicating how much of the goods in a country are exported to other countries. 
+
+My thinking is the following. Suppose each country holds at some moment in time a certain amount of value. We can express this as a vector $\vec{v}$, of 161 real and positive numbers, one entry for each country. We consider a "step" in time, during which all countries export a fraction of their value to other countries. Of this fraction, how do we distribute it amongst the importers? Well, we can simply consider that an importer will receive the fraction given by it's importance to the source country with respect to every other importer. In other words, if a country $i$ exports $x$ units of value in total, then country $j$ will receive 
+
+$$ x \cdot \frac{w_{ji}}{\sum_{k} w_{ki}} = x \cdot \frac{w_{ji}}{E_i}$$ 
+
+units of value, where $E_i$ are the total exports of $i$. 
+
+I wondered what the evolution of this system would be. Would it converge to a steady state? Would it oscillate? Well, let's find out. The following code is how I implemented the simulation. The important steps is `v += dt * (-v + np.dot(A_export_norm, v))`, where we are updating the vector $\vec{v}$ by distributing the imports amongst countries, with `A_export_norm` the adjacency matrix with the columns normalized (according to the sum of column $i$ being the total exports of $i$). The parameter `dt` is a time step to make things smoother. 
+
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">trade_diffusion</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+    <span class="n">A_export_norm</span> <span class="o">=</span> <span class="n">nx</span><span class="p">.</span><span class="nf">adjacency_matrix</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="c1"># divide each column of A by the total export of the corresponding node
+</span>    <span class="k">for</span> <span class="n">id_node</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">G</span><span class="p">.</span><span class="nf">nodes</span><span class="p">()):</span>
+        <span class="n">A_export_norm</span><span class="p">[:,</span> <span class="n">id_node</span><span class="p">]</span> <span class="o">=</span> <span class="n">A_export_norm</span><span class="p">[:,</span> <span class="n">id_node</span><span class="p">]</span> <span class="o">/</span> <span class="n">G</span><span class="p">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s">'total_export'</span><span class="p">]</span>
+    <span class="n">A_export_norm</span> <span class="o">=</span> <span class="n">A_export_norm</span><span class="p">.</span><span class="nf">toarray</span><span class="p">()</span>
+
+    <span class="c1"># Initialize the simulation
+</span>    <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># copy v so we don't modify the original
+</span>    <span class="n">v</span> <span class="o">=</span> <span class="n">copy</span><span class="p">.</span><span class="nf">deepcopy</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="c1"># keep track of the history of v
+</span>    <span class="n">v_hist</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">((</span><span class="n">steps</span><span class="p">,</span> <span class="nf">len</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
+    <span class="n">t_hist</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+    <span class="n">v_hist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+    <span class="c1"># Run the simulation
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'</span><span class="se">\r</span><span class="s">i = </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s"> /  </span><span class="si">{</span><span class="n">steps</span><span class="si">}</span><span class="s">'</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">+=</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">v</span> <span class="o">+</span> <span class="n">np</span><span class="p">.</span><span class="nf">dot</span><span class="p">(</span><span class="n">A_export_norm</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="n">t</span> <span class="o">+=</span> <span class="n">dt</span>
+        <span class="n">v_hist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">t_hist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+        
+    <span class="k">return</span> <span class="n">t_hist</span><span class="p">,</span> <span class="n">v_hist</span></code></pre></figure>
+ -->
+
+<h1 id="5-conclusions">5. Conclusions</h1>
+
+<p>In this post, we explored the trade network of the world, and how it changes over time. It was found that the network is highly connected, with a small number of countries dominating the trade, identifiable for example by their eigenvector centralities. The network has also evolved over the years, with centrality measures indicating that the network has tended to be more connected, although perhaps some countries are being circumvented in trade routes, as indicating by the decrease in betweenness centrality dispersion towards a more clustered distribution. As for the network attack analysis, we found, not surprisingly, that targeted attacks in which high degree nodes are removed impact the efficiency negatively. On the other hand, random node removals actually improved the efficiency of the network, although this is of course not a result that can be interpreted as “take out some countries out of the world economy, and the rest will do better”.</p>
+
+<p>This has been a relatively simply and short analysis of a network with not too many attributes. A more thorough analysis is definitely possible, including for example some dynamic simulations of trade flows. Also, utilizing more information from the <a href="https://comtradeplus.un.org/">UN Comtrade dataset</a> would be interesting, such as types of goods traded, and their values. This would naturally paint a more complex, and hopefully accurate, picture of the intricacies of the world trade network.</p>
+
+<h1 id="references">References</h1>
+
+<h2 id="economy">Economy</h2>
+<ol class="bibliography"><li><span id="peter_watson_fire_to_freud">Watson, P. (2005). <i>Ideas: A History of Thought and Invention from Fire to Freud</i>. HarperCollins Publishers.</span></li>
+<li><span id="britannica_silk_road">The Editors of Encyclopaedia Britannica. (n.d.). <i>Silk Road</i>. Encyclopaedia Britannica. https://www.britannica.com/topic/Silk-Road-trade-route</span></li></ol>
+<h2 id="network-science">Network Science</h2>
+<ol class="bibliography"><li><span id="newman2018networks">Newman, M. (2018). <i>Networks</i>. OUP Oxford.</span></li></ol>
+
+
+                    
+
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-3 hidden-xs"> { include sidebar.html } </div> -->
+          </div>
+        </div>
+        
+
+      </div>
+          <footer class="footer-distributed">
+      <div class="container">
+        <div class="footer">
+          <p>Martín Famá &copy; 1998-?</p>
+          <h6>Follow me</h6>
+
+<ul class="social-media">
+
+  
+    <li>
+      <a title="martinfama on Github" href="https://github.com/martinfama" target="_blank"><i class="fab fa-github fa-2x"></i></a>
+    </li>
+  
+
+  <!-- 
+    <li>
+      <a title=" on StackOverflow" href="https://stackoverflow.com/users/" target="_blank"><i class="fab fa-stack-overflow fa-2x"></i></a>
+    </li>
+  
+
+  
+
+  
+    <li>
+      <a title=" on Instagram" href="https://instagram.com/" target="_blank"><i class="fab fa-instagram fa-2x"></i></a>
+    </li>
+  
+
+  
+    <li>
+      <a title=" on Last.fm" href="https://www.lastfm.com/user/" target="_blank"><i class="fab fa-lastfm fa-2x"></i></a>
+    </li>
+  
+
+  
+    <li>
+      <a title="feed.xml RSS" href="/feed.xml" target="_blank"><i class="fas fa-rss fa-2x"></i></a>
+    </li>
+   -->
+
+</ul>
+
+        </div>
+      </div>
+    </footer>
+
+    </div>
+  </body>
+</html>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script> 

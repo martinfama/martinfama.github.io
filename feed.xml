@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Lost and found</title>
+		<description>Wanderer of a universe</description>
+		<link></link>
+		<atom:link href="/feed.xml" rel="self" type="application/rss+xml" />
+		
+			<item>
+				<title>Hyperbolic embeddings (under construction)</title>
+				<description>&lt;p&gt;In this post, I’ll be discussing hyperbolic embeddings, which was the main topic of my masters thesis. I’ll be discussing the motivation behind the model, how it works, and how it can be used to model networks.&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;h2 id=&quot;mathematics&quot;&gt;Mathematics&lt;/h2&gt;
+&lt;ol class=&quot;bibliography&quot;&gt;&lt;/ol&gt;
+
+</description>
+				<pubDate>Mon, 10 Apr 2023 00:00:10 -0300</pubDate>
+				<link>/2023/04/10/hyperbolic-embeddings/</link>
+				<guid isPermaLink="true">/2023/04/10/hyperbolic-embeddings/</guid>
+			</item>
+		
+			<item>
+				<title>Hyperbolic space (under construction)</title>
+				<description>&lt;h1 id=&quot;1-introduction&quot;&gt;1. Introduction&lt;/h1&gt;
+
+&lt;p&gt;This post is going to deal with what is called hyperbolic geometry, or more generally hyperbolic space. Mainly, I am writing this as a precursor to a future post about complex network embeddings in hyperbolic space, which was the main topic of my master’s thesis. During the course of my thesis, I found hyperbolic space to be very intriguing and interesting, though I did tend to limit myself to what I needed for the specific goal of network embeddings. Now, I find myself still drawn to this topic. It is a very rich and deep area of maths, and fortunately very “graphical” in nature (I really enjoy being able to “get” mathematical concepts visually). Not surprising really, since it is geometry after all. I hope to be able to convey some of the beauty of hyperbolic space.&lt;/p&gt;
+
+&lt;p&gt;Before we get started, I’d like to make clear the intention of the first parts of this post. Instead of diving into the more mathematical and technical aspects of hyperbolic space, which is a very common way that I’ve come across in literature and the internet, I try to lay down the foundational concepts that lead to non-Euclidean geometries (elliptic and hyperbolic), and then convey some intuition as to what makes these geometries different from the commonly called Euclidean geometry. In my experience, it makes a world of difference to have a good intuition for the geometry before getting into the technicalities.&lt;/p&gt;
+
+&lt;p&gt;After this, I move on to what are commonly called models of hyperbolic space, which are essentially representations of this space in Euclidean (flat) space.&lt;/p&gt;
+
+&lt;h1 id=&quot;2-the-background-of-hyperbolic-space&quot;&gt;2. The background of Hyperbolic space&lt;/h1&gt;
+
+&lt;p&gt;This space is quite similar to regular Euclidean (flat) space. In fact, it comes about from relaxing just one of Euclid’s axioms: the parallel postulate. Not to pass up the chance to talk about some of history’s oldest mathematics, let’s review the axioms of Euclidean geometry.&lt;/p&gt;
+
+&lt;h2 id=&quot;21-euclids-postulates-or-how-i-learned-to-stop-worrying-and-love-disregard-the-parallel-postulate&quot;&gt;2.1 Euclid’s postulates, or How I learned to stop worrying and &lt;del&gt;love&lt;/del&gt; disregard the parallel postulate&lt;/h2&gt;
+
+&lt;p&gt;Euclid laid out the foundations of geometry in his book &lt;em&gt;Elements&lt;/em&gt;. In it, he specified five axioms, or postulates, to be used as the basis of geometry. These are:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;A straight line segment can be drawn joining any two points.&lt;/li&gt;
+  &lt;li&gt;Any straight line segment can be extended indefinitely in a straight line.&lt;/li&gt;
+  &lt;li&gt;Given any straight lines segment, a circle can be drawn having the segment as radius and one endpoint as center.&lt;/li&gt;
+  &lt;li&gt;All Right Angles are congruent.&lt;/li&gt;
+  &lt;li&gt;If two lines are drawn which intersect a third in such a way that the sum of the inner angles on one side is less than two Right Angles, then the two lines inevitably must intersect each other on that side if extended far enough. This postulate is equivalent to what is known as the Parallel Postulate.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;These axioms are pretty intuitive if you sit down and think about them (or draw them on paper). They seem to be fundamental geometrical truths, and indeed the rest of geometry can be derived by combining, in ever-increasing complexity, these five axioms. However, something that bothered mathematicians for millenia was the seemingly contrived way of expressing the fifth postulate. In fact, it bothered some so much that they decided to spend a lot of time trying to find a way to derive it from the other axioms. For over two thousand years, this postulate stood up to intense scrutiny. Sometimes, a proof that it was not an axiom would be accepted for a while, but inevitably someone came along and pointed out the mistake. At some point, some people even tried proving it by contradiction, i.e. following some consequences of this postulate &lt;em&gt;not&lt;/em&gt; being true and finding contradictions. These attempts were unsuccessful, and the postulate remained. Eventually, during the 19th century, some mathematicians took this idea of denying the postulate and ran with it. They found that what emerged were completely new geometries, just as consistent as Euclidean geometry. Due to being able to negate the postulate in essentially two ways, two new geometries came to light: hyperbolic and elliptic. Each of the three geometries can then be described broadly by their corresponding parallel postulate:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Euclidean: For a given line and point not on the line, there exists a unique line through the point such that it does not intersect the given line.&lt;/li&gt;
+  &lt;li&gt;Hyperbolic: For a given line and point not on the line, there exists at least two lines that pass through the line and do not intersect the given line. In fact, there are infinitely many.&lt;/li&gt;
+  &lt;li&gt;Elliptic: For a given line and point not on the line, there exists no line that passes through the point and does not intersect the given line.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The way the three postulates are stated are what is known as &lt;a href=&quot;https://en.wikipedia.org/wiki/Playfair%27s_axiom&quot;&gt;Playfair’s axiom&lt;/a&gt;, which is a reformulation, but equivalent, to the original postulate.&lt;/p&gt;
+
+&lt;p&gt;I like how the figure below conveys the differences between parallel lines in the three geometries. In Euclidean geometry, parallel lines are always equidistant. In hyperbolic geometry, parallel lines have a certain point of closest approach, but elsewhere they are further apart (there are actually several categories of parallel lines in this geometry, but this point holds for all of them). In elliptic geometry, there is essentially no notion of parallel lines, since any two lines eventually intersect.&lt;/p&gt;
+
+&lt;p&gt;For a more detailed history of the parallel postulate, &lt;a href=&quot;https://en.wikipedia.org/wiki/Parallel_postulate&quot;&gt;this Wikipedia article&lt;/a&gt; is a good place to start.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;noneuclid_simple.png&quot; alt=&quot;All geometries&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;em&gt;A simple way to convey the three geometries.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The implications of following the parallel postulate in these three different ways are quite profound. One might look at the figure above and think “but those aren’t lines, not &lt;em&gt;straight&lt;/em&gt; lines at least”. And in Euclidean geometry that is quite true, we can intuitively detect that the lines are not straight. In the other two spaces, &lt;em&gt;space&lt;/em&gt; itself is different, it’s shape is not the same, and what constitutes a straight line has to walk in line with this new reality. This must start to sound a bit mystical at this point…&lt;/p&gt;
+
+&lt;p&gt;Consider the etymological roots of the words “elliptic” and “hyperbolic”:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;elliptic&lt;/strong&gt;: from Greek elleiptikos “defective”, from elleipein “leave out, fall short”.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;hyperbolic&lt;/strong&gt;: from Greek hyperbolikos “extravagant”, from hyperbolē “exaggeration”. verb, hyperballein, “to throw over or beyond”.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A profound symmetry. The elliptic geometry is deficient, and the hyperbolic geometry is extravagant. What does this mean? Perhaps we can see it through their respective parallel postulates: elliptic space doesn’t quite have what it takes to make parallel lines, and hyperbolic space overshoots and lets you have too many parallel lines. Another way to see it is through the amount of space that each one takes up. Let’s go ahead and look at what we mean by “amount of space”, and see the differences between the three geometries.&lt;/p&gt;
+
+&lt;h2 id=&quot;23-elliptic-geometry&quot;&gt;2.3 Elliptic geometry&lt;/h2&gt;
+
+&lt;p&gt;Consider the figure below. It shows a 3D sphere, with lines drawn on the 2D surface. &lt;em&gt;Technically&lt;/em&gt;, this isn’t a sphere at all, is it? It is still a 2D image on your screen, so at best we can call it a &lt;em&gt;projection&lt;/em&gt; of the sphere onto the 2D plane. However, since we have depth perception, and have seen a lot of round things in our lives, we can abstract and not get worked up about pedantics. I only comment this because it has helped me to separate the figures I see from the underlying models. As we will see in hyperbolic geometry, most ways of looking at it is through models that are not, in fact, the true geometry. While we are on the track of technicalities, the geometry of the sphere surface is not actually elliptic geometry, since lines intersect at two points. However, they hold many similarities, and as such spherical geometry is often called &lt;em&gt;double&lt;/em&gt; elliptic geometry.&lt;/p&gt;
+
+&lt;p&gt;Coming back to our sphere, we notice a few features: some points, arcs connecting the points (and also extended beyond) and the angles between these arcs. We can assume that the first three things laid out are the points A, B and C, and the rest is a consequence of the positions of these points. Firstly, consider the fact that the arcs connecting each pair of points is intuitively the shortest path possible. Shortest lines on the sphere surface are arcs of great circles, which are circles whose center is at the center of the sphere. Actually, a great circle that goes through two points has two ways of splitting it, but generally there is one arc which is shorter. If both arcs are the same length, then the points are &lt;em&gt;antipoles&lt;/em&gt; of each other, and as such there are actually an infinite number of great circles between them (think the prime meridians of the globe, which pass through the south and north pole). Shortest lines are called &lt;em&gt;geodesics&lt;/em&gt; (in any geometry), and they generalize what we consider straight lines.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;sphere_geometry.png&quot; alt=&quot;Spherical geometry&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;em&gt;The surface of a 3D sphere is a 2 dimensional manifold, very similar to elliptic geometry.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The important thing to keep in mind when analyzing this space is to not forget that the actual space is the 2D surface, not the surrounding 3D space. Consider the surprising results that a being living on this surface could find (for example, humans traveling the globe if they had not known it was round). One starts walking from say, the point C, in any direction, and keeps walking in a straight line. Since in a very local point, the surface is almost flat, one would be inclined to think that the entire world is flat (as many humans believed, and some keep believing…). Surprisingly, after walking a long while, you find yourself at C again! Space closes in on itself. Of course, if you get on a spaceship and fly away, you will find that the world is round. But, if you now think about the ideal case of the 2D surface, and a 2D being living on it, with no way to look up or down, then they wouldn’t have that luxury. Their entire universe would be contained in this closed space where lines eventually meet.&lt;/p&gt;
+
+&lt;p&gt;Despite being a very strange world indeed, I think most people don’t have too much trouble understanding it, mostly thanks to the fact that we have seen a lot of spheres in our lives (we live on one!). On the other hand, hyperbolic geometry is a lot less intuitive, in my opinion. However, as in the case of the sphere, we will see that there are in fact real world objects that hold the same illustrative properties. I urge the reader to keep in mind the point made in the previous paragraph: one thing is the manifold/model used to describe the geometry, which can help us to visualize and understand it (in this case, the sphere), and another thing is the actual space itself, independent of the model used to describe it (the point of view of the 2D being living on the surface of the sphere).&lt;/p&gt;
+
+&lt;h2 id=&quot;24-hyperbolic-geometry&quot;&gt;2.4 Hyperbolic geometry&lt;/h2&gt;
+
+&lt;p&gt;Consider the figure below. It shows a 2D surface embedded in 3D space. Again, imagine the perspective of a 2D being on this surface. If the being is small enough, they will find themselves standing on a flat plane all around them, only being able to deduce more information about the nature of their space if they move around enough. This surface is an example of hyperbolic geometry. It holds key characteristics that make it a representation of hyperbolic space, the same way that the sphere was our representation of (double) elliptic geometry. Notice that in this case, the surface doesn’t close in on itself. We could extend it as much as we wanted.&lt;/p&gt;
+
+&lt;p&gt;On this surface, shapes are drawn: some triangles and a circle. Let’s focus on the circle for a bit. From &lt;em&gt;our&lt;/em&gt; point of view, we can clearly see the circle bending and stretching to fit over the surface. However, from the point of view of someone on the surface, the circle would look, well, like a circle. However, if this hypothetical person went ahead and measured the circumference, they would find that $C \neq 2\pi r$ and $A \neq \pi r^2$. We can see from the cutout on the right that the circle holds “extra” space. As for the triangles drawn on this surface, they give us an idea of what straight lines look like. By straight lines, I am again talking about geodesics.&lt;/p&gt;
+
+&lt;p&gt;Out of all the properties of hyperbolic geometry, this notion of having “extra” space is the one most relevant to complex network embeddings, which as I commented in the introduction will be the focus of a future post. As it turns out, this extra space allows one to accommodate information in a way that is simply not possible in Euclidean space. But, I digress.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;manifold_circle.png&quot; alt=&quot;Arbitrary manifold&quot; width=&quot;600&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;em&gt;&lt;b&gt;Left&lt;/b&gt;: An arbitrary manifold with negative curvature throughout. Triangles and a circle are drawn. &lt;b&gt;Right&lt;/b&gt;: The circle is “wrinkly”, and has much more surface than a normal Euclidean circle. From &lt;a class=&quot;citation&quot; href=&quot;#thurston1984mathematics&quot;&gt;(“The Mathematics of Three-Dimensional Manifolds,” 1984)&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;hyperbolic_0_degree_triangles.png&quot; alt=&quot;Triangles with null internal angles in the Poincaré model.&quot; width=&quot;400&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;em&gt;Triangles with null internal angles in the Poincaré model.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;areas.png&quot; alt=&quot;Area of circles in the three different geometries.&quot; width=&quot;450&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;em&gt;Area of circles in the three different geometries.&lt;/em&gt;&lt;/p&gt;
+
+&lt;iframe width=&quot;681&quot; height=&quot;383&quot; src=&quot;https://www.youtube.com/embed/zQo_S3yNa2w&quot; title=&quot;Non-Euclidean Geometry Explained - Hyperbolica Devlog #1&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;em&gt;A pretty intuitive exposition of hyperbolic space, by &lt;a href=&quot;http://codeparade.net&quot;&gt;CodeParade&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;h2 id=&quot;mathematics&quot;&gt;Mathematics&lt;/h2&gt;
+&lt;ol class=&quot;bibliography&quot;&gt;&lt;li&gt;&lt;span id=&quot;thurston1984mathematics&quot;&gt;Thurston, W. P., &amp;amp; Weeks, J. R. (1984). The Mathematics of Three-dimensional Manifolds. &lt;i&gt;Scientific American&lt;/i&gt;, &lt;i&gt;251&lt;/i&gt;(1), 108–121.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;
+
+</description>
+				<pubDate>Mon, 10 Apr 2023 00:00:00 -0300</pubDate>
+				<link>/2023/04/10/hyperbolic-space/</link>
+				<guid isPermaLink="true">/2023/04/10/hyperbolic-space/</guid>
+			</item>
+		
+			<item>
+				<title>Trade network analysis</title>
+				<description>&lt;h1 id=&quot;1-introduction-trade&quot;&gt;1. Introduction: Trade&lt;/h1&gt;
+
+&lt;p&gt;Trade. The essence of human civilization. Maybe not &lt;em&gt;the&lt;/em&gt;, but definitely &lt;em&gt;an&lt;/em&gt;. Ever since a couple of biped hominids decided to swap some of their stuff, we’ve been trading. Long-distance commerce has been around for about 150,000 years! &lt;a class=&quot;citation&quot; href=&quot;#peter_watson_fire_to_freud&quot;&gt;(Watson, 2005)&lt;/a&gt; Trade necessarily implied contact between different cultures. The Silk Road for example connected China to the Mediterranean via a 6,400 km long road that was used for trade for over 1,000 years &lt;a class=&quot;citation&quot; href=&quot;#britannica_silk_road&quot;&gt;(&lt;i&gt;Silk Road&lt;/i&gt;, n.d.)&lt;/a&gt;. Material goods weren’t the only thing that travelled this ancient highway: ideas, religions, and diseases also found their way across the Eurasian continent.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;Silk-Road.jpg&quot; alt=&quot;The Silk Road&quot; /&gt;
+&lt;em&gt;The asian section of the Silk Road&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;At the time one of the most important trade networks, the Silk Road is modest compared to the globalized version of our times. Up until recently, there were very hard limiting factors to trading. It wasn’t just the speed of transportation; there were also communication barriers, the preservation of goods on long journeys, and even currency mismatches which complicated trade. There was a different pace back then. Eventually, the world went and got itself into a big damn hurry. Shipping stuff over the ocean is pretty much a given now. Communication is instantaneous. Goods are preserved for months in refrigerated containers. And we have a global currency; if money is the true language of the world, then the good ole’ American dollar is the lingua franca.&lt;/p&gt;
+
+&lt;p&gt;I don’t want to make this post about the history of trade. The reason behind this little incursion is that I came across a dataset on Kaggle which compiled information about the world’s trade network over the last two decades. Essentially, this is a practice dataset for network analysis and data visualization. Over the course of this post, I’ll show some code snippets and visualizations that I’ve made using this dataset. I’ll also try to explain some of the concepts that I’ve used, and hopefully this will be useful to someone.&lt;/p&gt;
+
+&lt;h1 id=&quot;2-the-dataset&quot;&gt;2. The dataset&lt;/h1&gt;
+
+&lt;p&gt;The dataset is simple: it shows the imports and exports between 161 countries in the years 2000, 2005, 2010, 2015 and 2018. This information is provided as directed, weighted networks for each year, with nodes being countries, edge direction representing importing and exporting, and edge weights representing the total annual value (in U&lt;span&gt;$&lt;/span&gt;D) of those imports and exports. The dataset can be found &lt;a href=&quot;https://www.kaggle.com/datasets/yasirtariq/tradenetwork&quot;&gt;here&lt;/a&gt;. According to the author, the data was compiled from the &lt;a href=&quot;https://comtradeplus.un.org/&quot;&gt;UN Comtrade database&lt;/a&gt;, which is a comprehensive database of international trade statistics. I’m tempted to try using this database directly, since it is much richer in information than the Kaggle dataset, but for now I’ll focus on the latter.&lt;/p&gt;
+
+&lt;h2 id=&quot;21-datafile-format&quot;&gt;2.1. Datafile format&lt;/h2&gt;
+
+&lt;p&gt;The files (five in total, one for each year), are &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pajek&lt;/code&gt; .net files. This is a common format for representing network data, and supported by most network analysis software. In the following block, we can see some of the entries in the file for the year 2000:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;*Vertices 161
+    1 &quot;AGO&quot;                                    0.5496    0.4378    0.5000
+    2 &quot;ALB&quot;                                    0.5560    0.7286    0.5000
+    3 &quot;ARE&quot;                                    0.6496    0.6301    0.5000
+    .  ...                                      ...       ...       ...
+    159 &quot;ZAF&quot;                                    0.5637    0.3302    0.5000
+    160 &quot;ZMB&quot;                                    0.5774    0.4270    0.5000
+    161 &quot;ZWE&quot;                                    0.5810    0.3944    0.5000
+*Arcs
+    2    3 1197.070000000
+    2    4 162.552000000
+    2    5 147.911000000
+    2    7 776.949000000
+    .    . ...
+    160  158 6.090000000
+    160  159 494256
+    160  161 68583.900000000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The first line of the file indicates the number of vertices (or nodes) that the network has, along with node names and attributes. In this specific case, names are given by the country’s &lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3&quot;&gt;ISO 3166-1 alpha-3 code&lt;/a&gt;. The attributes are not actually related to the countries themselves, but rather are given in the Pajek standard as a way to export to a PostScript description. The first two columns contain $x$ and $y$ positions, in the range $[0, 1)$. The third column is used as an index to specify shape/color to draw that specific node. The author of the dataset has apparently plotted the nodes according to longitude and latitude coordinates, so in a way the attributes actually are related to the countries. The third column, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shape&lt;/code&gt; attribute, is always set to 0.5, and we can ignore it.&lt;/p&gt;
+
+&lt;p&gt;After the vertices section, the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*Arcs&lt;/code&gt; section indicates the start of the edges. Each line represents an edge, with the first two numbers being the source and target nodes, and the third number being the weight of the edge. The weights are given in kiloU&lt;span&gt;$&lt;/span&gt;D (i.e. just multiply the value by 1000), and are the total value of imports between the two countries (in a certain direction) in the given year. Since this is a directed edge, the information is read as: source country (first node) imports $w$ (weight) kilodollars from target country (second node). For example, the first line in the above block indicates that Albania (node 2) imported &lt;span&gt;$&lt;/span&gt;1,197,070 worth of goods from the United Arab Emirates (node 3) in 2000.&lt;/p&gt;
+
+&lt;h2 id=&quot;22-loading-the-data&quot;&gt;2.2. Loading the data&lt;/h2&gt;
+
+&lt;p&gt;We’re going to be working with &lt;a href=&quot;https://networkx.org/&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;networkX&lt;/code&gt;&lt;/a&gt;, which as the website says:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;is a Python package for the creation, manipulation, and study of the structure, dynamics, and functions of complex networks.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;networkX&lt;/code&gt; is very nice to work with, although it does have certain limitations on the size of the networks it can efficiently handle. Since our network is composed of merely 161 nodes (in the world of complex networks, this is quite small), the library should be able to handle it just fine. An interesting aspect about this particular network is that it is &lt;em&gt;dense&lt;/em&gt;, in the sense that most of the possible connections between nodes actually exist, since countries tend to trade with almost every other country.&lt;/p&gt;
+
+&lt;p&gt;Anyways, we can use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;networkX&lt;/code&gt; to import the data from a Pajek file, as such:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;networkx&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nx&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read_pajek&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Let’s see how this works in practice. We’ll start by importing the data for the year 2000. We’ll also drop the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;y&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;shape&lt;/code&gt; attributes, since we won’t be using them. Finally, some information is retrieved about the graph, and the attributes of the Albania node are printed. The code is as follows:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;networkx&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nx&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;dataset_dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;../dataset/&apos;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;read_pajek&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dataset_dir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;2000.net&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# drop the &apos;x&apos;, &apos;y&apos; and &apos;shape&apos; attrs
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;x&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;y&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;shape&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Attributes of Albania node:&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;ALB&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;which outputs:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;MultiDiGraph with 161 nodes and 16335 edges
+Attributes of Albania node: {&apos;id&apos;: &apos;2&apos;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s see some of the edges of the Albania node, and while we’re at it, get the total imports of Albania in 2000:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;albania_imports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ie&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;enumerate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G_2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;ALB&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]):&lt;/span&gt;
+    &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;G_2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;ALB&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;albania_imports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;G_2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;ALB&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;weight&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;#print using scientific notation
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Total imports of Albania in 2000: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;albania_imports&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; U$D&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Output:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ARE {0: {&apos;weight&apos;: 1197.07}}
+ARG {0: {&apos;weight&apos;: 162.552}}
+ARM {0: {&apos;weight&apos;: 147.911}}
+AUS {0: {&apos;weight&apos;: 776.949}}
+AUT {0: {&apos;weight&apos;: 11840.4}}
+...
+UKR {0: {&apos;weight&apos;: 3169.35}}
+USA {0: {&apos;weight&apos;: 15947.3}}
+ZAF {0: {&apos;weight&apos;: 0.894}}
+Total imports of Albania in 2000: 1.07e+09 U$D
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So, Albania imported just over a billion dollars worth of goods in the first year of this millennium.&lt;/p&gt;
+
+&lt;p&gt;All right, so having familiarized ourselves with how the data is structured and loaded, let’s move on to building some tools to analyze the data. To avoid confusion, I’ll now clarify that I am making auxiliary functions in some &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.py&lt;/code&gt; files, as a sort of module to help me with the analysis. I’ll be importing these functions in the notebook, and using them to analyze the data.&lt;/p&gt;
+
+&lt;h1 id=&quot;3-analysis&quot;&gt;3. Analysis&lt;/h1&gt;
+
+&lt;p&gt;In this section, we will do some analysis on the network through the years, including degree distributions, centrality measures, and some other interesting things. In the figure below, we can see the network in 2010 plotted. Due to the high density of edges, this part is a bit of a mess. However, the node positions, sizes and colors are indicative of the degrees of the nodes and their centrality in the network.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;trade_network_2010.png&quot; alt=&quot;2010 Trade Network&quot; /&gt;
+&lt;em&gt;The trade network in 2010. Node size: degree. Node color: eigenvector centrality&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;31-degree-distributions&quot;&gt;3.1. Degree distributions&lt;/h2&gt;
+
+&lt;p&gt;A good first step in any network analysis is checking out the degree distribution. It can give us insight into the structure of the network. In the figure below, we can see the in-degree, out-degree and total degree distributions of the network across the years. The in-degree distribution only counts the number of edges that point to a node, the out-degree distribution only counts the number of edges that point out of a node, and the total degree distribution is the sum of the in-degree and out-degree distributions. In our case, out-degree indicates the number of countries that import from a given country, while in-degree indicates the number of countries that a given country imports from (a bit confusing to have the orders switched, but it is the way the data is structured).&lt;/p&gt;
+
+&lt;p&gt;Something that stands out at first is that in the case of the import distribution, there are several cases of countries having out-degree 0. This is due to missing data. For example, in the dataset for the year 2000, Angola (country code AGO, id 1) is not present as a source node in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*Arcs&lt;/code&gt; section. I find it highly unlikely that Angola did not import anything in that year, and it is much more likely that this data is missing for some reason. Interestingly, the number of countries with out-degree 0 decreases in the following years, but then increases again in 2015 and 2018.&lt;/p&gt;
+
+&lt;p&gt;As to the structure of the networks, the distributions show that the networks are quite dense, with most of the nodes having a high degree. This is expected, as commented previously, due to the fact that countries tend to trade with almost every other country.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;all_years_degrees.png&quot; alt=&quot;Degree distributions&quot; /&gt;
+&lt;em&gt;In-degree, out-degree and total degree distributions across the years&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;32-total-imports-and-exports&quot;&gt;3.2. Total imports and exports&lt;/h2&gt;
+
+&lt;p&gt;Let’s define a function to get the total imports and exports of a country in a given year. While in the last section we obtained the imports by summing over the list of edges form a given country, there is a more concise way to do it which is also inline with network analysis: using the &lt;a href=&quot;https://en.wikipedia.org/wiki/Adjacency_matrix&quot;&gt;adajacency matrix&lt;/a&gt;. It is easy to see that the adjacency matrix of our network (in a given year) is given by&lt;/p&gt;
+
+\[A_{ij} = \cases{\text{imports from j to i} &amp;amp; if $i \neq j$\\ 0 &amp;amp; otherwise}\]
+
+&lt;p&gt;Therefore, it is also quite simple to reach the conclusion that the total imports of a country $i$ in a given year is given by the sum of the $i$-th row of the adjacency matrix, and the total exports of a country $i$ in a given year is given by the sum of the $i$-th column of the adjacency matrix, i.e.:&lt;/p&gt;
+
+\[\text{imports of } i = \sum_{j=1}^n A_{ij} \quad \text{and} \quad \text{exports of } i = \sum_{j=1}^n A_{ji}\]
+
+&lt;p&gt;The adjacency matrix can be obtained using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nx.adjacency_matrix&lt;/code&gt;, which returns a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SciPy&lt;/code&gt; sparse matrix. This code snippet shows how to get the imports and exports of a country:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;imports_exports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;country&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;adjacency_matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;country&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;id&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# the ids start at 1, but we need 0-indexing
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;imports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:])&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# sum over the row
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# sum over the column
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;exports&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Nice and easy. Let’s go ahead an pull up data from all the years in the dataset, and plot the imports and exports of Albania over time. I’ll start to include less code now and just show the results, since this is pretty straightforward. In the figure below, the imports are shown in blue, and the exports in orange. Notice the y-axis is in scientific notation, with the scale being $1\text{e}9$, which means that the values are in billions of dollars. We can see that Albania’s imports and exports have tended to increase over time, with the imports being consistently higher than the exports. The trade balance, which is the difference between imports and exports, is being shown in green, and since in all cases imports are higher than exports, the balance is always negative: a deficit.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;ALB_exports_imports_yearly.png&quot; alt=&quot;Imports/Exports/Balance of Albania&quot; /&gt;
+&lt;em&gt;Imports/Exports/Balance of Albania from 2000 to 2018&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The implications of having a trade deficit (in contrast with a trade surplus) are not trivial. One would assume, at first glance, that a country that imports more than it exports is doing badly economically, but since the economy is so mucho more complicated than that, this is not necessarily the case. &lt;a href=&quot;https://www.investopedia.com/articles/investing/051515/pros-cons-trade-deficit.asp&quot;&gt;This article&lt;/a&gt; from Investopedia goes into the pros and cons of having a trade deficit, and I recommend reading it if you’re interested in the topic. Something interesting that the article mentions is that, broadly, smaller countries with a trade deficit are in more danger of foreign meddling in the economy. Which I think sort of makes sense. The US, for example, has had a consistent trade deficit since 1976, and yet it is still the world’s largest economy, dominating the global economy in many ways, since it’s size and power makes it less prone to foreign meddling.&lt;/p&gt;
+
+&lt;h2 id=&quot;33-centrality-measures&quot;&gt;3.3. Centrality measures&lt;/h2&gt;
+
+&lt;p&gt;I want to now move on to a more network oriented analysis. We’ll start by looking at the centrality measures of the countries in the network. The centrality measures are a set of metrics that are used to quantify, broadly speaking, the importance of a node in a network. There are many different centrality measures, but the most common ones are degree centrality, closeness centrality, betweenness centrality, and eigenvector centrality. In a nutshell, they focus on:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Degree centrality&lt;/strong&gt;: A measure of the number of connections a node has in comparison to other nodes in the network. If a node has many connections in comparison to other nodes, it is intuitively more important than a node with few connections.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Closeness centrality&lt;/strong&gt;: A measure of how close a node is to all other nodes in the network. “Close” here refers to the shortest path between nodes. If a node is reachable from all other nodes in the network with a short path, it is probably more important than a node that is not.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Betweenness centrality&lt;/strong&gt;: A measure of how many shortest paths between nodes in the network go through a given node. This measure is interesting, because it can be used to identify nodes that are “bridges” between different parts of the network.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Eigenvector centrality&lt;/strong&gt;: A measure of the importance of a node in the network, based on the importance of the nodes it is connected to. This is a more complex measure, related to the eigenvectors of the adjacency matrix of the network.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The first three measures are pretty straightforward, but the last one is a bit confusing, I think. What exactly is the “importance” of a node? How do we define the importance if it is recursively dependent on the importance of other nodes? First, let’s consider defining this relationship mathematically. We define a vector $\vec{x}$, in which $x_i \in \mathbb{R}$ is this mystical importance of node $i$. We &lt;em&gt;do not&lt;/em&gt; know the values of this vector yet. Next, we consider this sort of recursive relationship:&lt;/p&gt;
+
+\[x_i = \frac{1}{\lambda} \sum_{j=1}^n A_{ij} x_j\]
+
+&lt;p&gt;where $A$ is the adjacency matrix of the network and $\lambda$ is an (apparently) arbitrary constant. This equation is simply stating&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The importance of node $i$ is the sum of the importance of all the nodes that are connected to it, weighted by the corresponding edge weights.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I think it is quite simple and makes a lot of sense to define this measure like this. The only thing that is not clear is how to actually calculate the values of the vector $\vec{x}$. And how to choose a value for $\lambda$. Let’s rewrite the equation above in matrix form:&lt;/p&gt;
+
+\[\vec{x} = \frac{1}{\lambda} \mathbf{A} \vec{x}\]
+
+&lt;p&gt;and then&lt;/p&gt;
+
+\[\lambda \vec{x} = \mathbf{A} \vec{x}\]
+
+&lt;p&gt;and any one who has taken a linear algebra course will recognize this as an eigenvector problem! This means that the only solutions that satisfy our definition of importance are the eigenvectors of the adjacency matrix. The question is, which eigenvector do we choose? For an $n \times n$ matrix, there are $n$ eigenvectors, and we need to choose one. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Perron%E2%80%93Frobenius_theorem&quot;&gt;Perron-Frobenius theorem&lt;/a&gt; comes to the rescue here. This theorem states that for a square matrix $\mathbf{A}$ with all entries non-negative, the largest eigenvalue of $\mathbf{A}$ is real and positive, and the corresponding eigenvector is non-negative, while all other eigenvectors will have negative entries. This means that we can simply choose the eigenvector corresponding to the largest eigenvalue, which is called the leading eigenvector, and we will have a solution to our problem.&lt;/p&gt;
+
+&lt;p&gt;Now, the attentive reader will have noticed that as we have defined this measure, the importance of a node is being built by considering the importance of node &lt;em&gt;that point towards it&lt;/em&gt;. We are indeed considering, for a node $i$, a sum of the $i$-th row of $\mathbf{A}$. What if we want to consider the importance of a node based on the importance of the nodes that it points to? It does not take much to convince oneself that this implies defining our measure based on the &lt;em&gt;columns&lt;/em&gt;, in which case it is quite simple to see that this equates to solving a left eigenvector problem:&lt;/p&gt;
+
+\[\lambda \vec{y} = \vec{y} \mathbf{A}\]
+
+&lt;p&gt;where $\vec{y}$ is a row vector. In the previous equation, we had what is called a right eigenvector problem. For symmetric matrices, which would be the case of the adjacency matrix of an undirected network, the left and right eigenvectors are the same. However, for our network, the adjacency matrix is not symmetric, so we have to consider both left and right eigenvectors. For more information on this subject as regards to network science, I recommend checking out Newman’s book &lt;a class=&quot;citation&quot; href=&quot;#newman2018networks&quot;&gt;(Newman, 2018, chap. 7)&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;We can then summarize the two measures as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Eigenvector centrality (right)&lt;/strong&gt;: The importance of a node is the sum of the importance of all the nodes that &lt;strong&gt;point to it&lt;/strong&gt;, weighted by the corresponding edge weights. In the context of our trade network, it is roughly the &lt;strong&gt;importer importance&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Eigenvector centrality (left)&lt;/strong&gt;: The importance of a node is the sum of the importance of all the nodes that &lt;strong&gt;it points to&lt;/strong&gt;, weighted by the corresponding edge weights. In the context of our trade network, it is roughly the &lt;strong&gt;exporter importance&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All right! Having some intuition and formalism out of the way, let’s see some results. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;networkX&lt;/code&gt; has a function called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nx.eigenvector_centralities&lt;/code&gt; that does all the heavy lifting for us. We can specify whether we want to calculate the left or right eigenvector centrality, and we can also specify whether we want to use the wieghted or unweighted adjacency matrix. Since we want to include the weights of the edges, we will use the weighted adjacency matrix. In the figure below, the eigenvector centralities of each country are plotted for each year.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;eigenvector_centralities.png&quot; alt=&quot;Eigenvector Centralities&quot; /&gt;
+&lt;em&gt;Eigenvector Centralities over the years&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;We can clearly see that a few countries have high centralities (in both cases), while most countries are concentrated at a lower score. Interestingly, in the case of right centralities, which are related to importance as regards to imports, there is a singular country across the entire time period that has a high centrality. Let’s get the highest scores to find out which countries are leading the pack.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2000&lt;/th&gt;
+      &lt;th&gt;2005&lt;/th&gt;
+      &lt;th&gt;2010&lt;/th&gt;
+      &lt;th&gt;2015&lt;/th&gt;
+      &lt;th&gt;2018&lt;/th&gt;
+      &lt;th&gt;.&lt;/th&gt;
+      &lt;th&gt;2000&lt;/th&gt;
+      &lt;th&gt;2005&lt;/th&gt;
+      &lt;th&gt;2010&lt;/th&gt;
+      &lt;th&gt;2015&lt;/th&gt;
+      &lt;th&gt;2018&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;USA&lt;/td&gt;
+      &lt;td&gt;CHN&lt;/td&gt;
+      &lt;td&gt;CHN&lt;/td&gt;
+      &lt;td&gt;CHN&lt;/td&gt;
+      &lt;td&gt;CHN&lt;/td&gt;
+      &lt;td&gt;.&lt;/td&gt;
+      &lt;td&gt;USA&lt;/td&gt;
+      &lt;td&gt;USA&lt;/td&gt;
+      &lt;td&gt;USA&lt;/td&gt;
+      &lt;td&gt;USA&lt;/td&gt;
+      &lt;td&gt;USA&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CAN&lt;/td&gt;
+      &lt;td&gt;USA&lt;/td&gt;
+      &lt;td&gt;USA&lt;/td&gt;
+      &lt;td&gt;USA&lt;/td&gt;
+      &lt;td&gt;USA&lt;/td&gt;
+      &lt;td&gt;.&lt;/td&gt;
+      &lt;td&gt;CAN&lt;/td&gt;
+      &lt;td&gt;CAN&lt;/td&gt;
+      &lt;td&gt;CHN&lt;/td&gt;
+      &lt;td&gt;CHN&lt;/td&gt;
+      &lt;td&gt;CHN&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;JPN&lt;/td&gt;
+      &lt;td&gt;JPN&lt;/td&gt;
+      &lt;td&gt;JPN&lt;/td&gt;
+      &lt;td&gt;DEU&lt;/td&gt;
+      &lt;td&gt;JPN&lt;/td&gt;
+      &lt;td&gt;.&lt;/td&gt;
+      &lt;td&gt;MEX&lt;/td&gt;
+      &lt;td&gt;DEU&lt;/td&gt;
+      &lt;td&gt;CAN&lt;/td&gt;
+      &lt;td&gt;CAN&lt;/td&gt;
+      &lt;td&gt;CAN&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;CHN&lt;/td&gt;
+      &lt;td&gt;CAN&lt;/td&gt;
+      &lt;td&gt;DEU&lt;/td&gt;
+      &lt;td&gt;JPN&lt;/td&gt;
+      &lt;td&gt;DEU&lt;/td&gt;
+      &lt;td&gt;.&lt;/td&gt;
+      &lt;td&gt;JPN&lt;/td&gt;
+      &lt;td&gt;MEX&lt;/td&gt;
+      &lt;td&gt;DEU&lt;/td&gt;
+      &lt;td&gt;MEX&lt;/td&gt;
+      &lt;td&gt;MEX&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MEX&lt;/td&gt;
+      &lt;td&gt;DEU&lt;/td&gt;
+      &lt;td&gt;CAN&lt;/td&gt;
+      &lt;td&gt;KOR&lt;/td&gt;
+      &lt;td&gt;KOR&lt;/td&gt;
+      &lt;td&gt;.&lt;/td&gt;
+      &lt;td&gt;DEU&lt;/td&gt;
+      &lt;td&gt;JPN&lt;/td&gt;
+      &lt;td&gt;MEX&lt;/td&gt;
+      &lt;td&gt;DEU&lt;/td&gt;
+      &lt;td&gt;DEU&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;DEU&lt;/td&gt;
+      &lt;td&gt;KOR&lt;/td&gt;
+      &lt;td&gt;KOR&lt;/td&gt;
+      &lt;td&gt;CAN&lt;/td&gt;
+      &lt;td&gt;MEX&lt;/td&gt;
+      &lt;td&gt;.&lt;/td&gt;
+      &lt;td&gt;GBR&lt;/td&gt;
+      &lt;td&gt;GBR&lt;/td&gt;
+      &lt;td&gt;JPN&lt;/td&gt;
+      &lt;td&gt;JPN&lt;/td&gt;
+      &lt;td&gt;JPN&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GBR&lt;/td&gt;
+      &lt;td&gt;MEX&lt;/td&gt;
+      &lt;td&gt;MEX&lt;/td&gt;
+      &lt;td&gt;MEX&lt;/td&gt;
+      &lt;td&gt;CAN&lt;/td&gt;
+      &lt;td&gt;.&lt;/td&gt;
+      &lt;td&gt;FRA&lt;/td&gt;
+      &lt;td&gt;CHN&lt;/td&gt;
+      &lt;td&gt;GBR&lt;/td&gt;
+      &lt;td&gt;HKG&lt;/td&gt;
+      &lt;td&gt;HKG&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;FRA&lt;/td&gt;
+      &lt;td&gt;FRA&lt;/td&gt;
+      &lt;td&gt;FRA&lt;/td&gt;
+      &lt;td&gt;FRA&lt;/td&gt;
+      &lt;td&gt;FRA&lt;/td&gt;
+      &lt;td&gt;.&lt;/td&gt;
+      &lt;td&gt;CHN&lt;/td&gt;
+      &lt;td&gt;FRA&lt;/td&gt;
+      &lt;td&gt;HKG&lt;/td&gt;
+      &lt;td&gt;GBR&lt;/td&gt;
+      &lt;td&gt;GBR&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;KOR&lt;/td&gt;
+      &lt;td&gt;GBR&lt;/td&gt;
+      &lt;td&gt;AUS&lt;/td&gt;
+      &lt;td&gt;ITA&lt;/td&gt;
+      &lt;td&gt;AUS&lt;/td&gt;
+      &lt;td&gt;.&lt;/td&gt;
+      &lt;td&gt;KOR&lt;/td&gt;
+      &lt;td&gt;HKG&lt;/td&gt;
+      &lt;td&gt;FRA&lt;/td&gt;
+      &lt;td&gt;FRA&lt;/td&gt;
+      &lt;td&gt;KOR&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ITA&lt;/td&gt;
+      &lt;td&gt;ITA&lt;/td&gt;
+      &lt;td&gt;GBR&lt;/td&gt;
+      &lt;td&gt;GBR&lt;/td&gt;
+      &lt;td&gt;ITA&lt;/td&gt;
+      &lt;td&gt;.&lt;/td&gt;
+      &lt;td&gt;HKG&lt;/td&gt;
+      &lt;td&gt;BEL&lt;/td&gt;
+      &lt;td&gt;KOR&lt;/td&gt;
+      &lt;td&gt;KOR&lt;/td&gt;
+      &lt;td&gt;FRA&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;em&gt;Top 10 countries by eigenvector centrality. Exports on left, imports on right.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Both lists contain countries which I don’t find surprising. They tend to be larger and historically economically powerful countries. The most important importer, as seen on the right, is the USA. This is across all years. One takeaway from this result is that the USA seems to consume a large amount of products from a variety of trade partners, which is in line with the consumerism associated to this country. It is quite surprising that it’s right centrality score is so much higher than the rest.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;USA_exports_imports_yearly.png&quot; alt=&quot;Imports/Exports/Balance of the USA&quot; /&gt;
+&lt;em&gt;Imports/Exports/Balance of the USA from 2000 to 2018&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Another interesting country we can focus on is China. Between 2000 and 2005, it climbed from the 4th position to 1st in terms of left centrality (exporter importance). It has stayed on top of the leader board for the rest of the time period. As to the right centrality, we can see China climb from 8th and 7th in 2000 and 2005 to 2nd place for the rest of the time period. Basing ourselves on these results alone, we can conclude that in the last two decades, China not only amped up its exporter status, but also improved it’s economy to the point where it is able to import a large amount of products from other countries. One needs not look too far to see the economic powerhouse that China has become in the last few decades. A quick skim of the &lt;a href=&quot;https://en.wikipedia.org/wiki/Economy_of_China&quot;&gt;Wikipedia page on China’s economy&lt;/a&gt; will show a long list of economic achievements. The figure below also shows the trade balance of China from 2000 to 2018. The growth in both imports and exports is quite large, and exports have been consistently higher than imports, indicating a trade surplus.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;CHN_exports_imports_yearly.png&quot; alt=&quot;Imports/Exports/Balance of China&quot; /&gt;
+&lt;em&gt;Imports/Exports/Balance of China from 2000 to 2018&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;As for the rest of the centralities, I thought a scatter matrix of all the measures would be a good way to visualize them. The figure below is a GIF that shows the scatter matrix for each year. The diagonal shows the distribution of each centrality, while the off-diagonal shows the scatter plot of each pair of centralities. Some notable trends are the tendency for closeness to decrease across the years (due to the network becoming more connected), and the tendency for betweeness to become more clustered in relation to degree centrality. In the latter case, we can see for example in the year 2018 two main clusters: one for lower degree centrality, in which the betweeness is very low, and another for higher degree centrality, in which the betweeness is higher. I dare to say that this implies that lower degree countries, which are probably more marginalized countries in the world economy, are being even more left out of the main pathways of economic activity.&lt;/p&gt;
+
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;centralities_scatter.gif&quot; alt=&quot;Centralities Scatter Matrix&quot; width=&quot;500&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;text-align: center;&quot;&gt;&lt;em&gt;Centralities Scatter Matrix&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;4-network-attacks&quot;&gt;4. Network attacks&lt;/h1&gt;
+
+&lt;p&gt;In this section I’m going the explore the impact of a network attack on the overall functioning of the network. Suppose in this global economy, a country is left economically isolated, due to any number of reasons. How would this affect the rest of the network? I’m going to explore this question by removing nodes from the network and observing the impact on the rest of the network. I’ll focus on two ways to do this: random removals, and targeted removals. The targeted case is done by taking out the node with highest degree.&lt;/p&gt;
+
+&lt;p&gt;As to how to evaluate the impact of the attack, I’ll use a measure called network efficiency, which broadly measures the capacity of the network to quickly transfer information. This is based on the shortest path between nodes. I think it is a decent measure for a trade network, because it can be interpreted as the capacity of the network to quickly transfer goods. The efficiency for an unweighted network is defined as:&lt;/p&gt;
+
+\[E(G) = \frac{1}{N(N-1)} \sum_{i \neq j} \frac{1}{d(i,j)}\]
+
+&lt;p&gt;where $N$ is the number of nodes, and $d(i,j)$ is the shortest path between nodes $i$ and $j$. I am using the unweighted representation of our networks because in this case, the weight of the edges is not indicative of a distance measure. A good test would be to apply a weighted version of this measure (which exist), using the &lt;em&gt;inverse&lt;/em&gt; of the weights, since a high trade volume can be interpreted as a “short” economic distance between countries, allowing that trade to be more efficient in distributing goods.&lt;/p&gt;
+
+&lt;p&gt;Anyways, the figure below shows the impact on the unweighted global efficiency of the network across the years, for different number of nodes removed. The left figure shows random node removals, while the right figure shows targeted removals, where each node removed is the current highest degree node in the network. A total of 80 nodes were removed in each case, as indicated by the colormap. In the case of the targeted attack, the efficiency consistently takes a hit with each node removed. As for the random attack, the efficiency actually &lt;em&gt;improves&lt;/em&gt; as nodes are removed. This makes some sense, because if more marginal nodes are removed, the network actually becomes more connected, and therefore more efficient.&lt;/p&gt;
+
+&lt;p&gt;As to the general efficiency across the years, it is interesting that 2010 is consistently the most efficient version of this network. There is a pretty steep decline in 2015 and 2018. I’m not sure what to make of this. It could be indicative of some economic regressions across the globe, or simply an artefact of missing data.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;network_efficiency_attack.png&quot; alt=&quot;network_efficiency&quot; /&gt;
+&lt;em&gt;Node removal impact on network efficiency&lt;/em&gt;&lt;/p&gt;
+
+&lt;!-- # 5. Trade diffusion simulation
+
+In this section, I&apos;m going to explore a simple simulation of trade diffusion. The idea is to start the simulation with certain countries holding a certain amount of &quot;money&quot; or &quot;goods&quot;, and then simulate the diffusion of these goods through the network. In each step, the rules of update are based on the import/export weights between countries, indicating how much of the goods in a country are exported to other countries. 
+
+My thinking is the following. Suppose each country holds at some moment in time a certain amount of value. We can express this as a vector $\vec{v}$, of 161 real and positive numbers, one entry for each country. We consider a &quot;step&quot; in time, during which all countries export a fraction of their value to other countries. Of this fraction, how do we distribute it amongst the importers? Well, we can simply consider that an importer will receive the fraction given by it&apos;s importance to the source country with respect to every other importer. In other words, if a country $i$ exports $x$ units of value in total, then country $j$ will receive 
+
+$$ x \cdot \frac{w_{ji}}{\sum_{k} w_{ki}} = x \cdot \frac{w_{ji}}{E_i}$$ 
+
+units of value, where $E_i$ are the total exports of $i$. 
+
+I wondered what the evolution of this system would be. Would it converge to a steady state? Would it oscillate? Well, let&apos;s find out. The following code is how I implemented the simulation. The important steps is `v += dt * (-v + np.dot(A_export_norm, v))`, where we are updating the vector $\vec{v}$ by distributing the imports amongst countries, with `A_export_norm` the adjacency matrix with the columns normalized (according to the sum of column $i$ being the total exports of $i$). The parameter `dt` is a time step to make things smoother. 
+
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;trade_diffusion&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A_export_norm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;adjacency_matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# divide each column of A by the total export of the corresponding node
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id_node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;node&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;enumerate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;A_export_norm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id_node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A_export_norm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id_node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;node&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;total_export&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A_export_norm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A_export_norm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;toarray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# Initialize the simulation
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# copy v so we don&apos;t modify the original
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;copy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;deepcopy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# keep track of the history of v
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;v_hist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;t_hist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;v_hist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# Run the simulation
+&lt;/span&gt;    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\r&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;i = &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; /  &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;dot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A_export_norm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dt&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;v_hist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;t_hist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
+        
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_hist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v_hist&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+ --&gt;
+
+&lt;h1 id=&quot;5-conclusions&quot;&gt;5. Conclusions&lt;/h1&gt;
+
+&lt;p&gt;In this post, we explored the trade network of the world, and how it changes over time. It was found that the network is highly connected, with a small number of countries dominating the trade, identifiable for example by their eigenvector centralities. The network has also evolved over the years, with centrality measures indicating that the network has tended to be more connected, although perhaps some countries are being circumvented in trade routes, as indicating by the decrease in betweenness centrality dispersion towards a more clustered distribution. As for the network attack analysis, we found, not surprisingly, that targeted attacks in which high degree nodes are removed impact the efficiency negatively. On the other hand, random node removals actually improved the efficiency of the network, although this is of course not a result that can be interpreted as “take out some countries out of the world economy, and the rest will do better”.&lt;/p&gt;
+
+&lt;p&gt;This has been a relatively simply and short analysis of a network with not too many attributes. A more thorough analysis is definitely possible, including for example some dynamic simulations of trade flows. Also, utilizing more information from the &lt;a href=&quot;https://comtradeplus.un.org/&quot;&gt;UN Comtrade dataset&lt;/a&gt; would be interesting, such as types of goods traded, and their values. This would naturally paint a more complex, and hopefully accurate, picture of the intricacies of the world trade network.&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+
+&lt;h2 id=&quot;economy&quot;&gt;Economy&lt;/h2&gt;
+&lt;ol class=&quot;bibliography&quot;&gt;&lt;li&gt;&lt;span id=&quot;peter_watson_fire_to_freud&quot;&gt;Watson, P. (2005). &lt;i&gt;Ideas: A History of Thought and Invention from Fire to Freud&lt;/i&gt;. HarperCollins Publishers.&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&quot;britannica_silk_road&quot;&gt;The Editors of Encyclopaedia Britannica. (n.d.). &lt;i&gt;Silk Road&lt;/i&gt;. Encyclopaedia Britannica. https://www.britannica.com/topic/Silk-Road-trade-route&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;
+&lt;h2 id=&quot;network-science&quot;&gt;Network Science&lt;/h2&gt;
+&lt;ol class=&quot;bibliography&quot;&gt;&lt;li&gt;&lt;span id=&quot;newman2018networks&quot;&gt;Newman, M. (2018). &lt;i&gt;Networks&lt;/i&gt;. OUP Oxford.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;
+
+</description>
+				<pubDate>Fri, 07 Apr 2023 00:00:00 -0300</pubDate>
+				<link>/2023/04/07/trade-network/</link>
+				<guid isPermaLink="true">/2023/04/07/trade-network/</guid>
+			</item>
+		
+	</channel>
+</rss>
