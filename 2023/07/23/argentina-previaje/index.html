@@ -11,7 +11,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Lost and found | Hyperbolic embeddings (under construction) </title>
+    <title>Lost and found | Argentina Previaje Dashboard </title>
     <meta name="theme-color" content="#222222"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/assets/js/jquery.min.js"></script>
@@ -74,11 +74,11 @@
             <div class="col-md-8 offset-md-2">
               <div class="article">
                 <div class="card">
-                  <h1><a href="/2023/04/10/hyperbolic-embeddings/">Hyperbolic embeddings (under construction)</a></h1>
+                  <h1><a href="/2023/07/23/argentina-previaje/">Argentina Previaje Dashboard</a></h1>
                   <div class="post-meta">
                     <div class="post-time">
                       <i class="fa fa-calendar-alt"></i>
-                      <time>10 Apr 2023</time>
+                      <time>23 Jul 2023</time>
                     </div>
                     <ul>
                       
@@ -86,21 +86,15 @@
                   </div>
                   <div class="post-content">
                     
-                      <ul class="toc">
-  <li><a href="#references">References</a>
-    <ul>
-      <li><a href="#mathematics">Mathematics</a></li>
-    </ul>
-  </li>
-</ul>
+                      
                     
-                    <p>In this post, I’ll be discussing hyperbolic embeddings, which was the main topic of my masters thesis. I’ll be discussing the motivation behind the model, how it works, and how it can be used to model networks.</p>
+                    <p>This is going to be a short post. It’s just about something I published on Github, which I made a few months ago. I was getting into learning about making dashboards with Python, so I decided to make one about the <a href="https://www.argentina.gob.ar/turismoydeportes/previaje">Argentina Previaje</a> program. The program was implemented along side travelling opening up again after the first wave of the pandemic, and it was meant to incentivize tourism by giving people a 50% return on their spending on tourism-related services. A pretty neat way of helping both the tourism industry and the tourist.</p>
 
-<h1 id="references">References</h1>
+<p>Anyways, the dashboard is pretty simple. It’s made using <a href="https://dash.plotly.com/">Dash</a>, a library for making interactive data visualizations in Python. You don’t have to know much about HTML or CSS to make some pretty nice looking stuff. The dashboard has some graphs that show the amount of travellers between provinces in the selected date. Also, a table that just shows the amount of people who benefitted from the program, divided by province of origin, age and gender.</p>
 
-<h2 id="mathematics">Mathematics</h2>
-<ol class="bibliography"></ol>
+<p style="text-align: center;"><img src="screenshot.png" alt="Argentina Previaje Dashboard" /></p>
 
+<p>Check it out at <a href="https://github.com/martinfama/ArgPreviajeDashboard">ArgPreviajeDashboard</a>. Something that I’d still like to implement is being able to publish it on this site, but Github pages is essentially for static pages only, which means that it doesn’t support frameworks which use a server to run things, which is how Dash works. I’ve been looking at some possible solutions to it, and found some comments from folks about building a complete static version of the dashboard, but it didn’t seem too trivial. Something I’ll definitely maybe look into eventually.</p>
 
                     
 

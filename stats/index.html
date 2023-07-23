@@ -102,6 +102,13 @@
     var datePostsWords = [
         
             {
+                "t":"2023-7",
+                "year":"2023",
+                "x":1,
+                "y":266
+            },
+        
+            {
                 "t":"2023-4",
                 "year":"2023",
                 "x":1,
@@ -275,6 +282,8 @@
 <script>
     var totalWords = [
         
+            266,
+        
             43,
         
             2314,
@@ -282,7 +291,7 @@
             5455,
         
     ].reduce((a, b) => a + b, 0);
-    var totalPosts = 3;
+    var totalPosts = 4;
 
     function concatBoldTextToELement(id, text) {
         var abvgd = document.createElement('b');
@@ -302,6 +311,8 @@
               <!-- <div class="sidebar ">
   <h2>Recent Posts</h2>
   <ul>
+    
+    <li><a href="/2023/07/23/argentina-previaje/">Argentina Previaje Dashboard</a></li>
     
     <li><a href="/2023/04/10/hyperbolic-embeddings/">Hyperbolic embeddings (under construction)</a></li>
     
@@ -327,7 +338,7 @@
           <footer class="footer-distributed">
       <div class="container">
         <div class="footer">
-          <p>Martín Famá &copy; 1998-??</p>
+          <p>Martín Famá &copy; 1998-?</p>
           <h6>Follow me</h6>
 
 <ul class="social-media">
